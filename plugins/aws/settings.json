@@ -1,0 +1,8 @@
+{
+  "name": "plugins/aws",
+  "version": "0.1",
+  "bucket": "job-platform",
+  "folder": "job-platform",
+  "logsFolder": "job-platform/logs",
+  "region": "fra1"
+}
