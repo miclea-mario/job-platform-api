@@ -1,6 +1,14 @@
 const { basename, extname } = require('path');
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
-const settings = require('../settings.json');
+
+const settings = {
+  name: 'plugins/aws',
+  version: '0.1',
+  bucket: 'job-platform',
+  folder: 'job-platform',
+  logsFolder: 'job-platform/logs',
+  region: 'fra1',
+};
 
 const s3Client = new S3Client({
   endpoint: `https://${settings.region}.digitaloceanspaces.com`,
