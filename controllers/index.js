@@ -4,3 +4,4 @@ export * as Company from './company';
 export * as Identity from './identity';
 export * as Jobs from './jobs';
 export * as User from './user';
+export * as Webhook from './webhook';

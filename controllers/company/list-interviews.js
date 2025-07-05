@@ -12,8 +12,9 @@ export default async (req, res) => {
 
   const documents = await Application.find({
     job: { $in: jobs },
-    interviewDetails: { $exists: true },
+    interview: { $exists: true },
   })
+    .populate('interview')
     .populate('user', 'name avatar')
     .populate('job', 'title');
 

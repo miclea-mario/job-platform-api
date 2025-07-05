@@ -1,0 +1,243 @@
+@startuml
+skinparam linetype ortho
+skinparam nodesep 15
+skinparam ranksep 15
+hide empty members
+skinparam classAttributeIconSize 0
+
+!define AdminColor #E0B0FF
+!define CandidatColor #87CEEB
+!define CompanieColor #FFA07A
+!define JobColor #90EE90
+!define AplicatieColor #FFFFE0
+!define InterviuColor #FFB6C1
+!define RaportPotrivireJobColor #D2B48C
+
+' Embedded Object Colors
+!define DetaliuCVColor #AFEEEE
+!define DetaliuPreferinteJobColor #98FB98
+!define ExperientaColor #B0E0E6
+!define EducatieColor #FFE4E1
+!define AbilitateEsentialaColor #F0E68C
+
+' Enums
+enum RolEnum {
+  administrator
+  companie
+  candidat
+}
+
+enum StatusAplicatieEnum {
+  IN_ASTEPTARE
+  VIZUALIZATA
+  INTERVIU_PROGRAMAT
+  RESPINSA
+  OFERTA_FACUTA
+  ANGAJAT
+}
+
+enum StatusRaportInterviuEnum {
+  IN_ASTEPTARE
+  IN_GENERARE
+  FINALIZAT
+  ESUAT
+}
+
+enum DimensiuneCompanieEnum {
+  1-5
+  11-50
+  51-200
+  201-500
+  501-1000
+  1001-5000
+  5000+
+}
+
+enum TipLocatieMuncaEnum {
+  LA_SEDIU
+  DE_ACASA
+  HIBRID
+}
+
+enum TipAngajareEnum {
+  NORMA_INTREAGA
+  NORMA_PARTIALA
+  CONTRACT
+  TEMPORAR
+  STAGIU
+}
+
+enum NivelExperientaEnum {
+  INCEPATOR
+  JUNIOR
+  NIVEL_MEDIU
+  SENIOR
+  EXECUTIV
+}
+
+enum CalificareMinimaEnum {
+  LICEU
+  LICENTA
+  MASTERAT
+  DOCTORAT
+  NICIUNA
+}
+
+entity Administrator AdminColor {
+  rol : RolEnum <<enum: administrator>>
+  admin_specific_activ : Boolean
+}
+
+' Definitions for objects to be embedded within Candidat
+object DetaliiCVObj DetaliuCVColor {
+  urlFisier : String
+  numeFisier : String
+  dataActualizareCV : Data
+  textExtras : String
+}
+
+object DetaliiPreferinteJobObj DetaliuPreferinteJobColor {
+  salariuDorit_min : Numar
+  salariuDorit_max : Numar
+  tipuriAngajare : Lista<TipAngajareEnum>
+  locatiiPreferate : Lista<String>
+}
+
+object ExperientaObj ExperientaColor {
+  * titluPozitie : String
+  * numeCompanie : String
+  --
+  locatie : String
+  dataStart : Data
+  dataSfarsit : Data
+  pozitieActuala : Boolean
+  descriere : String
+}
+
+object EducatieObj EducatieColor {
+  * institutie : String
+  * diploma : String
+  --
+  domeniuStudiu : String
+  dataStart : Data
+  dataSfarsit : Data
+  studiuActual : Boolean
+  descriere : String
+}
+
+entity Candidat CandidatColor {
+  rol : RolEnum <<enum: candidat>>
+  --
+  titluProfesional : String
+  bio : String
+  abilitati : Lista<String>
+  telefon : String
+  locatie : String
+  -- Embedded Objects --
+  detaliiCV : DetaliiCVObj
+  detaliiPreferinteJob : DetaliiPreferinteJobObj
+  experiente : Lista<ExperientaObj>
+  educatie : Lista<EducatieObj>
+}
+
+entity Companie CompanieColor {
+  rol : RolEnum <<enum: companie>>
+  --
+  descriere : String
+  industrie : String
+  * telefonCompanie : String
+  website : String
+  adresa : String
+  oras : String
+  tara : String
+  codPostal : String
+  anInfiintare : Numar
+  dimensiuneCompanie : DimensiuneCompanieEnum
+  beneficiiOferite : Lista<String>
+  valoriCompanie : Lista<String>
+}
+
+entity Job JobColor {
+  * _id : ObjectId
+  * companie_id : <font color=CompanieColor>ObjectId</font> <<FK>>
+  * titlu : String
+  * descrierePost : String
+  * tipLocatieMunca : TipLocatieMuncaEnum
+  * tipAngajare : TipAngajareEnum
+  * nivelExperienta : NivelExperientaEnum
+  * dataLimitaAplicare : Data
+  * abilitatiNecesare : Lista<String>
+  --
+  numarPosturiDisponibile : Numar
+  oras : String
+  responsabilitati : Lista<String>
+  calificareMinima : CalificareMinimaEnum
+  salariu_min : Numar
+  salariu_max : Numar
+  beneficiiPost : Lista<String>
+  activ : Boolean
+  dataCreare : Data
+  dataActualizare : Data
+}
+
+entity Aplicatie AplicatieColor {
+  * _id : ObjectId
+  * candidat_id : <font color=CandidatColor>ObjectId</font> <<FK>>
+  * companie_id : <font color=CompanieColor>ObjectId</font> <<FK>> ' Retained for direct query
+  * job_id : <font color=JobColor>ObjectId</font> <<FK>>
+  --
+  status : StatusAplicatieEnum
+  interviu_id : <font color=InterviuColor>ObjectId</font> <<FK>> ' Optional
+  dataCreare : Data
+  dataActualizare : Data
+}
+
+entity Interviu InterviuColor {
+  * _id : ObjectId
+  * aplicatie_id : <font color=AplicatieColor>ObjectId</font> <<FK>>
+  --
+  dataInterviu : Data
+  oraInterviu : String
+  idSalaVirtuala : String
+  transcriereText : String
+  statusRaport : StatusRaportInterviuEnum
+  ' Integrated report fields
+  raport_scorGeneral : Numar
+  raport_sumar : String
+  raport_abilitatiComunicare_scor : Numar
+  raport_abilitatiComunicare_evaluare : String
+  raport_abilitatiTehnice_scor : Numar
+  raport_abilitatiTehnice_evaluare : String
+  raport_evaluareComportamentala_scor : Numar
+  raport_evaluareComportamentala_evaluare : String
+  raport_puncteForte : Lista<String>
+  raport_ariiImbunatatire : Lista<String>
+  raport_evaluareAbilitati_AI : String ' Reprezentare simplificată
+  raport_feedbackGeneral_AI : String
+  raport_dataGenerare : Data
+}
+
+' Definition for objects to be embedded within RaportPotrivireJob
+object AbilitateEsentialaObj AbilitateEsentialaColor {
+  * numeAbilitate : String
+  --
+  scorAbilitate : Numar
+}
+
+entity RaportPotrivireJob RaportPotrivireJobColor {
+  * _id : ObjectId
+  * candidat_id : <font color=CandidatColor>ObjectId</font> <<FK>>
+  * job_id : <font color=JobColor>ObjectId</font> <<FK>>
+  --
+  scorPotrivire : Numar
+  sumarCompanie : String
+  sumarCandidat : String
+  puncteForte : Lista<String>
+  puncteSlabe : Lista<String>
+  dataCreare : Data
+  dataActualizare : Data
+  -- Embedded Objects --
+  abilitatiEsentiale : Lista<AbilitateEsentialaObj>
+}
+
+@enduml

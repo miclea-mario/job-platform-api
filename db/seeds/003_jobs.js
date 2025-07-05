@@ -6,9 +6,7 @@ export async function seed() {
   try {
     console.log('Planting seeds for jobs...');
 
-    const companies = await Company.find({
-      name: { $in: ['Altex', 'Rockstar Games'] },
-    });
+    const companies = await Company.find().lean();
 
     const seeds = await jobs(companies);
     await Job.insertMany(seeds);

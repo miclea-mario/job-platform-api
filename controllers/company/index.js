@@ -1,5 +1,9 @@
 export { default as countApplications } from './count-applications';
 export { default as createJob } from './create-job';
+export { default as dashboardApplications } from './dashboard-applications';
+export { default as dashboardJobs } from './dashboard-jobs';
+export { default as dashboardPerformance } from './dashboard-performance';
+export { default as dashboardStats } from './dashboard-stats';
 export { default as deleteJob } from './delete-job';
 export { default as getJob } from './get-job';
 export { default as listApplications } from './list-applications';

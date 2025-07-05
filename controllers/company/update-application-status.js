@@ -5,7 +5,7 @@ const { APPLICATION_STATUS } = require('constants/application');
 module.exports = async (req, res) => {
   const { me } = req.user;
   const { id } = req.params;
-  const { status } = req.body;
+  const { interview, status } = req.body;
 
   if (!Object.values(APPLICATION_STATUS).includes(status)) {
     throw error('Invalid status');
@@ -14,13 +14,13 @@ module.exports = async (req, res) => {
   // First, find and update the application with the provided data
   let application = await Application.findOneAndUpdate(
     { _id: id, company: me },
-    { ...req.body },
+    { status },
     { new: true } // Return the updated document
   );
 
   // If the status is for interview, generate the interview room
   if (status === APPLICATION_STATUS.PENDING_INTERVIEW) {
-    await generateInterviewRoom(application);
+    await generateInterviewRoom(application, interview);
   }
 
   return res.status(200).json({ message: 'Application updated', application });

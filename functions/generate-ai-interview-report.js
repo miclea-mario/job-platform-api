@@ -1,24 +1,24 @@
-const { Job, User } = require('@models');
+const { Application } = require('@models');
 const axios = require('axios');
-const { buildMatchPrompt } = require('@functions');
-const { isEmpty } = require('lodash');
+const { default: buildAIInterviewPrompt } = require('./build-ai-interview-prompt');
 
-const generateAIMatchReport = async (jobId, userId) => {
-  const [job, user] = await Promise.all([
-    Job.findById(jobId).populate('company'),
-    User.findById(userId),
-  ]);
-
-  if (!job || !user) {
-    throw new Error('Job or User not found');
+const generateAIInterviewReport = async (interviewId, transcriptText) => {
+  const application = await Application.findOne({ interview: interviewId }).populate(
+    'job user interview'
+  );
+  if (!application) {
+    throw new Error('Application not found');
   }
 
-  // Check if user has enough details
-  if (isEmpty(user.resume)) {
-    throw new Error('User does not have enough details');
+  const { job, user, interview } = application;
+
+  // Ensure the interview object has the latest transcript text
+  // (even though it's passed as an argument, the populated interview might be used)
+  if (interview && transcriptText) {
+    interview.transcriptText = transcriptText;
   }
 
-  const prompt = buildMatchPrompt(job, user);
+  const prompt = buildAIInterviewPrompt(job, user, interview);
   try {
     const response = await axios.post(
       `${process.env.AI_API_ENDPOINT}/api/v1/chat/completions`,
@@ -52,9 +52,9 @@ const generateAIMatchReport = async (jobId, userId) => {
 
     return JSON.parse(cleanedContent);
   } catch (error) {
-    console.error('Error generating AI match report:', error);
-    throw new Error('Failed to generate match report');
+    console.error('Error generating AI interview report:', error); // Corrected log message
+    throw new Error('Failed to generate interview report'); // Corrected error message
   }
 };
 
-module.exports = generateAIMatchReport;
+module.exports = generateAIInterviewReport;

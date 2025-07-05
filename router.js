@@ -27,6 +27,7 @@ router.use(routes.admin);
 router.use(routes.company);
 router.use(routes.user);
 router.use(routes.jobs);
+router.use(routes.webhook);
 
 // Matches any other HTTP method and route not matched before
 router.all('*', middleware.notFound);

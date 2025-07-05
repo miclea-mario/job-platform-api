@@ -4,3 +4,4 @@ export { default as company } from './company';
 export { default as identity } from './identity';
 export { default as jobs } from './jobs';
 export { default as user } from './user';
+export { default as webhook } from './webhook';

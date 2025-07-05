@@ -1,7 +1,6 @@
 const { model, Schema } = require('mongoose');
 const { paginate, validate } = require('express-goodies/mongoose');
 const { APPLICATION_STATUS } = require('constants/application');
-const { interview } = require('./schemas');
 
 const name = 'application';
 const schema = new Schema(
@@ -26,7 +25,10 @@ const schema = new Schema(
       enum: Object.values(APPLICATION_STATUS),
       default: APPLICATION_STATUS.PENDING,
     },
-    interviewDetails: interview,
+    interview: {
+      type: Schema.Types.ObjectId,
+      ref: 'interview',
+    },
   },
   { timestamps: true }
 );

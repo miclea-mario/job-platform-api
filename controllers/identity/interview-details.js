@@ -1,5 +1,5 @@
 import { error, randomHash } from '@functions';
-import { Application, Identity } from '@models';
+import { Identity, Interview } from '@models';
 const jwt = require('jsonwebtoken');
 
 export default async (req, res) => {
@@ -13,14 +13,14 @@ export default async (req, res) => {
     throw error(404, 'Missing required params');
   }
 
-  const [identity, application] = await Promise.all([
+  const [identity, interview] = await Promise.all([
     Identity.findById(me).select('role name avatar').lean(),
-    Application.findById(applicationId).select('interviewDetails').lean(),
+    Interview.findOne({ application: applicationId }).lean(),
   ]);
 
   const payload = {
     access_key: process.env.HMS_ACCESS_KEY,
-    room_id: application.interviewDetails.roomId,
+    room_id: interview.roomId,
     user_id: me,
     role: identity.role,
     type: 'app',
@@ -35,5 +35,5 @@ export default async (req, res) => {
     jwtid: randomHash(),
   });
 
-  return res.status(200).json({ application, user: identity, token });
+  return res.status(200).json({ interview, user: identity, token });
 };

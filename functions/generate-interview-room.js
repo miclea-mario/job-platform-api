@@ -1,6 +1,6 @@
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
-const { Application } = require('@models');
+const { Application, Interview } = require('@models');
 const { default: randomHash } = require('./random-hash');
 
 /**
@@ -8,7 +8,7 @@ const { default: randomHash } = require('./random-hash');
  * @param {Object} application - The job application object containing information about the interview
  * @returns {Object} - Room details including roomId, roomCode, and managementToken
  */
-const generateInterviewRoom = async (application) => {
+const generateInterviewRoom = async (application, interviewDetails) => {
   try {
     // Prepare user data for room name and description
     const companyName = application.job?.company?.name;
@@ -54,10 +54,18 @@ const generateInterviewRoom = async (application) => {
       }
     );
 
+    await Interview.deleteMany({ application: application._id });
+
+    const interview = await Interview.create({
+      roomId: roomResponse.data.id,
+      application: application._id,
+      ...interviewDetails,
+    });
+
     await Application.findByIdAndUpdate(
       application._id,
       {
-        'interviewDetails.roomId': roomResponse.data.id,
+        interview,
       },
       { new: true }
     );

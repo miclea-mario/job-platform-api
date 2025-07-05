@@ -1,0 +1,62 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam nodesep 30
+skinparam ranksep 200
+hide empty members
+
+class Identitate <<Clasă de Bază>> {}
+class Administrator {}
+class Companie {}
+class Candidat {}
+class Experienta {}
+class Educatie {}
+class CV {}
+class PreferinteJob {}
+class IntervalSalarial {}
+class Aplicatie {}
+class Interviu {}
+class RaportInterviu {}
+class EvaluareAbilitate {}
+class Job {}
+class RaportPotrivireJob {}
+class PrezentareCompanie {}
+class PrezentareCandidat {}
+class AbilitateEsentiala {}
+
+Identitate <|-- Administrator : moștenește
+Identitate <|-- Companie : moștenește
+Identitate <|-- Candidat : moștenește
+
+Candidat "1" *-- "0..*" Experienta : conține
+Candidat "1" *-- "0..*" Educatie : conține
+Candidat "1" *-- "0..1" CV : are
+Candidat "1" *-- "0..1" PreferinteJob : definește
+PreferinteJob "1" *-- "0..1" IntervalSalarial : "specifică (salariu dorit)"
+
+Job "1" *-- "0..1" IntervalSalarial : "oferă (salariu post)"
+
+Interviu "1" *-- "0..1" RaportInterviu : generează
+RaportInterviu "1" *-- "0..*" EvaluareAbilitate : "detaliază (ex: tehnice, comunicare)"
+
+RaportPotrivireJob "1" *-- "0..1" PrezentareCompanie : include
+RaportPotrivireJob "1" *-- "0..1" PrezentareCandidat : include
+RaportPotrivireJob "1" *-- "0..*" AbilitateEsentiala : evaluează
+
+Companie "1" -- "0..*" Job : publică
+Job "1" -- "1" Companie : aparține
+
+Aplicatie "1" -- "1" Candidat : "depusă de"
+Aplicatie "1" -- "1" Companie : către
+Aplicatie "1" -- "1" Job : pentru
+Aplicatie "1" -- "0..1" Interviu : "poate duce la"
+
+Interviu "1" -- "1" Aplicatie : "este pentru"
+
+RaportPotrivireJob "1" -- "1" Candidat : "referitor la"
+RaportPotrivireJob "1" -- "1" Job : "referitor la"
+@enduml

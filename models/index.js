@@ -4,6 +4,7 @@ export { default as Company } from './company';
 export { default as Confirm } from './confirm';
 export { default as Hash } from './hash';
 export { default as Identity } from './identity';
+export { default as Interview } from './interview';
 export { default as Job } from './job';
 export { default as JobMatchReport } from './job-match-report';
 export { default as Reset } from './reset';

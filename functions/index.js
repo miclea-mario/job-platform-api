@@ -6,7 +6,8 @@ export { default as safeNumber } from 'express-goodies/functions/safe-number';
 export { default as safeString } from 'express-goodies/functions/safe-string';
 
 // Export the functions
-export { default as buildPrompt } from './build-prompt';
+export { default as buildMatchPrompt } from './build-match-prompt';
+export { default as generateAIInterviewReport } from './generate-ai-interview-report';
 export { default as generateAIMatchReport } from './generate-ai-match-report';
 export { default as generateInterviewRoom } from './generate-interview-room';
 export { default as generateTokens } from './generate-tokens';
