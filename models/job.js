@@ -108,6 +108,8 @@ schema.statics.filters = (query) => {
 
   const filter = {};
 
+  filter.isActive = true; // Only active jobs
+
   if (city) {
     filter.city = new RegExp(city, 'i');
   }

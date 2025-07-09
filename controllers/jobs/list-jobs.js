@@ -7,7 +7,6 @@ export default async (req, res) => {
     .paginate(req.query);
 
   if (!documents) {
-    k;
     throw error(404, 'No jobs found');
   }
 
