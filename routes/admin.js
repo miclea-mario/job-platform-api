@@ -8,6 +8,7 @@ export default router;
 router.all('/admin', authenticate, authorize('admin'));
 router.all('/admin/*', authenticate, authorize('admin'));
 
+router.get('/admin/dashboard/stats', Admin.dashboardStats);
 router.get('/admin/users', Admin.listUsers);
 router.patch('/admin/users/:id/toggle-status', Admin.toggleUserStatus);
 router.get('/admin/jobs', Admin.listJobs);
