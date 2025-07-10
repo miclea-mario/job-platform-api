@@ -27,7 +27,7 @@ export default async (req, res) => {
   const paginationQuery = { per_page };
 
   const documents = await Application.find(filter)
-    .populate('job company')
+    .populate('job company interview')
     .paginate(paginationQuery);
 
   // Get AI match reports for all applications
