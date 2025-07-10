@@ -1,4 +1,4 @@
-import { error, randomHash } from '@functions';
+import { error, getInterviewRoom, randomHash } from '@functions';
 import { Identity, Interview } from '@models';
 const jwt = require('jsonwebtoken');
 
@@ -35,5 +35,7 @@ export default async (req, res) => {
     jwtid: randomHash(),
   });
 
-  return res.status(200).json({ interview, user: identity, token });
+  const room = await getInterviewRoom(applicationId);
+
+  return res.status(200).json({ interview, user: identity, token, room });
 };

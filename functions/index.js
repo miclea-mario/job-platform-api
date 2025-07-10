@@ -12,5 +12,6 @@ export { default as generateAIMatchReport } from './generate-ai-match-report';
 export { default as generateInterviewRoom } from './generate-interview-room';
 export { default as generateTokens } from './generate-tokens';
 export { default as getAIMatchReport } from './get-ai-match-report';
+export { default as getInterviewRoom } from './get-interview-room';
 export { default as randomHash } from './random-hash';
 export { default as removeRefreshTokenCookie } from './remove-refresh-token-cookie';
