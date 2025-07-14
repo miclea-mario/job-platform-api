@@ -14,6 +14,9 @@ router.put('/user/profile', User.updateProfile);
 // Upload resume
 router.put('/user/resume', User.updateResume);
 
+// Extract profile data from existing resume
+router.post('/user/extract-profile-from-resume', User.extractProfileFromResume);
+
 // Apply for job
 router.post('/user/apply/:jobId', User.applyJob);
 

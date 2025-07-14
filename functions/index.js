@@ -9,9 +9,11 @@ export { default as safeString } from 'express-goodies/functions/safe-string';
 export { default as buildMatchPrompt } from './build-match-prompt';
 export { default as generateAIInterviewReport } from './generate-ai-interview-report';
 export { default as generateAIMatchReport } from './generate-ai-match-report';
+export { default as generateAIProfileExtraction } from './generate-ai-profile-extraction';
 export { default as generateInterviewRoom } from './generate-interview-room';
 export { default as generateTokens } from './generate-tokens';
 export { default as getAIMatchReport } from './get-ai-match-report';
 export { default as getInterviewRoom } from './get-interview-room';
 export { default as randomHash } from './random-hash';
 export { default as removeRefreshTokenCookie } from './remove-refresh-token-cookie';
+
