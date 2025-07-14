@@ -25,12 +25,11 @@ const buildPrompt = (job, user) => {
   if (user.experience?.length) candidateData.experience = user.experience;
   if (user.education?.length) candidateData.education = user.education;
   if (user.location) candidateData.location = user.location;
-  if (user.resume?.extractedText) candidateData.extractedResumeText = user.resume.extractedText;
 
   return `
   You are an AI assistant providing detailed job-candidate match analysis that will be shown to both job seekers and companies.
   Analyze the job and candidate information below and provide a comprehensive match report in JSON format.
-  
+
   Return ONLY valid JSON with the following structure:
   {
     "score": A number from 0-100 representing the overall match percentage,
@@ -65,10 +64,10 @@ const buildPrompt = (job, user) => {
       }
     ]
   }
-  
+
   Job Information:
   ${JSON.stringify(jobData, null, 2)}
-  
+
   Candidate Information:
   ${JSON.stringify(candidateData, null, 2)}
   `;
